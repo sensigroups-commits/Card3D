@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>کارت سه‌بعدی واکنش‌گرا | برند شما</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #0b0b15 0%, #1a1a2e 100%);
+      font-family: 'Vazirmatn', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1600px;
+      padding: 1rem;
+    }
+
+    /* کارت واکنش‌گرا: عرض بر اساس صفحه، ارتفاع با aspect-ratio */
+    .card-container {
+      width: 100%;
+      max-width: 400px;  /* حداکثر عرض برای دسکتاپ */
+      aspect-ratio: 3 / 4; /* نسبت عرض به ارتفاع (متناسب با طرح کارت) */
+      margin: 0 auto;
+      position: relative;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .card-container:active {
+      cursor: grabbing;
+    }
+
+    /* تنظیم حداکثر عرض برای اندازه‌های مختلف صفحه */
+    @media (max-width: 480px) {
+      .card-container {
+        max-width: 260px; /* اندازه موبایل */
+      }
+    }
+
+    @media (min-width: 481px) and (max-width: 768px) {
+      .card-container {
+        max-width: 340px; /* اندازه تبلت */
+      }
+    }
+
+    /* برای دسکتاپ همان 400px باقی می‌ماند (min-width: 769px) */
+
+    .card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      border-radius: 28px;
+      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 215, 0, 0.3) inset;
+      transition: box-shadow 0.3s;
+      will-change: transform;
+    }
+
+    .card:hover {
+      box-shadow: 0 40px 60px rgba(0, 0, 0, 0.8), 0 0 0 3px gold inset;
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 28px;
+      -webkit-backface-visibility: hidden !important;
+      backface-visibility: hidden !important;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+    }
+
+    .card-front {
+      background: linear-gradient(145deg, #2b1b3a, #1d2b4e);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .card-back {
+      background: linear-gradient(145deg, #2c3e50, #1e2a3a);
+      color: white;
+      transform: rotateY(180deg);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+    }
+
+    .card-face::before,
+    .card-face::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .card-face::before {
+      width: 220px;
+      height: 220px;
+      background: rgba(255, 255, 255, 0.05);
+      top: -100px;
+      right: -100px;
+    }
+    .card-face::after {
+      width: 180px;
+      height: 180px;
+      background: rgba(0, 0, 0, 0.2);
+      bottom: -80px;
+      left: -80px;
+    }
+
+    .logo, .brand-name, .social-icons, .contact-info, .tagline, .icon-wrapper {
+      z-index: 2;
+      position: relative;
+    }
+
+    .logo {
+      width: min(100px, 30%);
+      aspect-ratio: 1 / 1;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      font-size: min(3.5rem, 15vw);
+      color: white;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .brand-name {
+      font-size: clamp(1.5rem, 6vw, 2.2rem);
+      font-weight: 900;
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      word-break: break-word;
+      line-height: 1.2;
+    }
+
+    .tagline {
+      font-size: clamp(0.8rem, 3vw, 1rem);
+      font-weight: 400;
+      opacity: 0.9;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      padding-top: 0.8rem;
+      margin-top: 0.8rem;
+      width: 100%;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: clamp(1rem, 4vw, 1.5rem);
+      margin: 1.5rem 0;
+    }
+
+    .social-icons a {
+      color: white;
+      font-size: clamp(1.8rem, 6vw, 2rem);
+      transition: transform 0.2s, color 0.2s;
+      text-decoration: none;
+      opacity: 0.9;
+    }
+
+    .social-icons a:hover {
+      transform: translateY(-5px) scale(1.1);
+      color: gold;
+    }
+
+    .contact-info {
+      font-size: clamp(0.8rem, 3vw, 0.95rem);
+      font-weight: 300;
+      margin-top: 0.8rem;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.5rem clamp(1rem, 4vw, 1.2rem);
+      border-radius: 40px;
+      backdrop-filter: blur(2px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      width: fit-content;
+      max-width: 90%;
+    }
+
+    .instruction {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      color: #aaa;
+      font-size: 0.75rem;
+      background: rgba(0,0,0,0.5);
+      padding: 6px 16px;
+      border-radius: 30px;
+      backdrop-filter: blur(4px);
+      letter-spacing: 0.3px;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <div class="card-container" id="cardContainer">
+    <div class="card" id="card">
+      <!-- وجه جلو (برند) -->
+      <div class="card-face card-front">
+        <div class="logo">
+          <i class="fas fa-crown"></i>
+        </div>
+        <div class="brand-name">
+          SENSI
+        </div>
+        <div class="tagline">
+          <i class="fas fa-star" style="font-size: 0.8rem;"></i> 24/7 <i class="fas fa-star" style="font-size: 0.8rem;"></i>
+        </div>
+        <div style="margin-top: 1.5rem; font-size: 0.85rem; opacity: 0.7; background: rgba(0,0,0,0.2); padding: 0.3rem 1rem; border-radius: 30px;">
+          <i class="fas fa-sync-alt"></i> در حال چرخش ... <i class="fas fa-hand-pointer"></i> بکشید
+        </div>
+      </div>
+
+      <!-- وجه پشت (اطلاعات تماس) -->
+      <div class="card-face card-back">
+        <div class="icon-wrapper">
+          <i class="fas fa-rocket" style="font-size: clamp(2rem, 8vw, 3rem); margin-bottom: 0.8rem; color: #ffd966;"></i>
+        </div>
+        <div class="brand-name" style="font-size: clamp(1.4rem, 5vw, 1.8rem);">
+          ارتباط با ما
+        </div>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-telegram"></i></a>
+          <a href="#"><i class="fab fa-whatsapp"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="contact-info">
+          <i class="fas fa-envelope"></i> SensiGroups@Gmail.com
+        </div>
+        <div class="contact-info" style="margin-top: 0.5rem;">
+          <i class="fas fa-phone-alt"></i> 9739 094 901 +98
+        </div>
+        <div class="tagline" style="border-top-color: rgba(255,255,255,0.2); margin-top: 1.2rem;">
+          <i class="fas fa-globe"></i> T.ME/CO3IN0S
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="instruction">
+    SENSI GROUPS 
+  </div>
+
+  <script>
+    (function() {
+      const card = document.getElementById('card');
+      const container = document.getElementById('cardContainer');
+
+      // زوایای کنونی
+      let angleX = 0;
+      let angleY = 0;
+
+      // متغیرهای مربوط به درگ
+      let isDragging = false;
+      let lastX, lastY;
+      const dragSensitivity = 0.8;
+
+      // کنترل انیمیشن خودکار
+      let animationFrame = null;
+      let lastTimestamp = null;
+      const speedPerMs = 0.05; // 50 درجه بر ثانیه
+
+      function updateTransform() {
+        card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg)`;
+      }
+
+      function autoRotate(timestamp) {
+        if (!isDragging) {
+          if (lastTimestamp !== null) {
+            const delta = timestamp - lastTimestamp;
+            angleY += delta * speedPerMs;
+          }
+          lastTimestamp = timestamp;
+        } else {
+          lastTimestamp = null;
+        }
+
+        updateTransform();
+        animationFrame = requestAnimationFrame(autoRotate);
+      }
+
+      animationFrame = requestAnimationFrame(autoRotate);
+
+      // ---- رویدادهای درگ ----
+      function startDrag(e) {
+        e.preventDefault();
+        isDragging = true;
+
+        if (e.type === 'mousedown') {
+          lastX = e.clientX;
+          lastY = e.clientY;
+        } else if (e.type === 'touchstart') {
+          lastX = e.touches[0].clientX;
+          lastY = e.touches[0].clientY;
+        }
+      }
+
+      function drag(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+
+        let clientX, clientY;
+        if (e.type === 'mousemove') {
+          clientX = e.clientX;
+          clientY = e.clientY;
+        } else if (e.type === 'touchmove') {
+          clientX = e.touches[0].clientX;
+          clientY = e.touches[0].clientY;
+        } else {
+          return;
+        }
+
+        const deltaX = clientX - lastX;
+        const deltaY = clientY - lastY;
+
+        angleY += deltaX * dragSensitivity;
+        angleX -= deltaY * dragSensitivity;
+
+        lastX = clientX;
+        lastY = clientY;
+
+        updateTransform();
+      }
+
+      function endDrag(e) {
+        if (isDragging) {
+          isDragging = false;
+          lastTimestamp = null;
+        }
+      }
+
+      container.addEventListener('mousedown', startDrag);
+      window.addEventListener('mousemove', drag);
+      window.addEventListener('mouseup', endDrag);
+
+      container.addEventListener('touchstart', startDrag, { passive: false });
+      window.addEventListener('touchmove', drag, { passive: false });
+      window.addEventListener('touchend', endDrag);
+      window.addEventListener('touchcancel', endDrag);
+    })();
+  </script>
+</body>
+</html>
