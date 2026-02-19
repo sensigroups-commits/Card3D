@@ -72,9 +72,9 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 1.5rem 1rem;
+      padding: 2rem 1rem;  /* افزایش padding بالا و پایین برای جلوگیری از برش */
       text-align: center;
-      overflow: visible; /* تغییر از hidden به visible برای نمایش کامل موشک */
+      overflow: visible;    /* مهم: محتوای خارج از کادر بریده نشود */
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
       transform: translateZ(0);
       -webkit-transform: translateZ(0);
@@ -171,7 +171,6 @@
       transition: transform 0.2s, color 0.2s;
       text-decoration: none;
       opacity: 0.9;
-      /* تضمین کلیک روی لینک‌ها */
       pointer-events: auto;
       cursor: pointer;
       z-index: 5;
@@ -195,7 +194,18 @@
       max-width: 90%;
     }
 
-    /* کلاس مخصوص متن راهنما - برای حذف کافیست این بخش را پاک کنید */
+    /* تنظیمات ویژه برای موشک (پشت کارت) */
+    .card-back .icon-wrapper {
+      line-height: 1;                    /* جلوگیری از ارتفاع اضافی */
+      margin-top: 0.5rem;                /* فاصله از لبه بالا */
+      margin-bottom: 0.2rem;
+    }
+
+    .card-back .icon-wrapper i {
+      font-size: clamp(2rem, 7vw, 2.5rem); /* کاهش سایز برای جاگیری بهتر */
+    }
+
+    /* متن راهنما (در صورت تمایل حذف شود) */
     .helper-text {
       margin-top: 1rem;
       font-size: 0.8rem;
@@ -203,7 +213,7 @@
       background: rgba(0,0,0,0.2);
       padding: 0.3rem 1rem;
       border-radius: 30px;
-      pointer-events: none; /* جلوگیری از تداخل با کلیک */
+      pointer-events: none;
     }
 
     .instruction {
@@ -244,13 +254,13 @@
       <!-- وجه پشت (اطلاعات تماس) -->
       <div class="card-face card-back">
         <div class="icon-wrapper">
-          <i class="fas fa-rocket" style="font-size: clamp(2rem, 8vw, 3rem); margin-bottom: 0.5rem; color: #ffd966;"></i>
+          <i class="fas fa-rocket"></i>
         </div>
         <div class="brand-name" style="font-size: clamp(1.4rem, 5vw, 1.8rem);">
           ارتباط با ما
         </div>
         <div class="social-icons">
-          <!-- لینک‌های خود را اینجا جایگزین کنید -->
+          <!-- لینک‌های خود را اینجا جایگزین کنید (آدرس‌های نمونه) -->
           <a href="https://instagram.com/username" target="_blank"><i class="fab fa-instagram"></i></a>
           <a href="https://t.me/username" target="_blank"><i class="fab fa-telegram"></i></a>
           <a href="https://wa.me/989123456789" target="_blank"><i class="fab fa-whatsapp"></i></a>
@@ -308,13 +318,10 @@
       }
       animationFrame = requestAnimationFrame(autoRotate);
 
-      // شروع درگ فقط اگر روی لینک کلیک نشده باشد
       function startDrag(e) {
-        // اگر روی یک عنصر <a> یا داخل آن کلیک شده باشد، درگ شروع نشود
+        // اگر روی لینک کلیک شده باشد، درگ شروع نشود تا لینک کار کند
         const target = e.target;
-        if (target.closest('a')) {
-          return; // اجازه کلیک به لینک داده شود
-        }
+        if (target.closest('a')) return;
 
         e.preventDefault();
         isDragging = true;
