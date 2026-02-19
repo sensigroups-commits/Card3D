@@ -24,11 +24,10 @@
       padding: 1rem;
     }
 
-    /* کارت واکنش‌گرا: عرض بر اساس صفحه، ارتفاع با aspect-ratio */
     .card-container {
       width: 100%;
-      max-width: 400px;  /* حداکثر عرض برای دسکتاپ */
-      aspect-ratio: 3 / 4; /* نسبت عرض به ارتفاع (متناسب با طرح کارت) */
+      max-width: 400px;
+      aspect-ratio: 3 / 4;
       margin: 0 auto;
       position: relative;
       cursor: grab;
@@ -39,20 +38,12 @@
       cursor: grabbing;
     }
 
-    /* تنظیم حداکثر عرض برای اندازه‌های مختلف صفحه */
     @media (max-width: 480px) {
-      .card-container {
-        max-width: 260px; /* اندازه موبایل */
-      }
+      .card-container { max-width: 260px; }
     }
-
     @media (min-width: 481px) and (max-width: 768px) {
-      .card-container {
-        max-width: 340px; /* اندازه تبلت */
-      }
+      .card-container { max-width: 340px; }
     }
-
-    /* برای دسکتاپ همان 400px باقی می‌ماند (min-width: 769px) */
 
     .card {
       width: 100%;
@@ -81,9 +72,9 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 2rem 1.5rem;
+      padding: 1.5rem 1rem;
       text-align: center;
-      overflow: hidden;
+      overflow: visible; /* تغییر از hidden به visible برای نمایش کامل موشک */
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
       transform: translateZ(0);
       -webkit-transform: translateZ(0);
@@ -140,7 +131,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       border: 2px solid rgba(255, 255, 255, 0.4);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
       font-size: min(3.5rem, 15vw);
@@ -152,7 +143,7 @@
       font-size: clamp(1.5rem, 6vw, 2.2rem);
       font-weight: 900;
       letter-spacing: 1px;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
       text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
       word-break: break-word;
       line-height: 1.2;
@@ -163,15 +154,15 @@
       font-weight: 400;
       opacity: 0.9;
       border-top: 1px solid rgba(255, 255, 255, 0.2);
-      padding-top: 0.8rem;
-      margin-top: 0.8rem;
+      padding-top: 0.6rem;
+      margin-top: 0.6rem;
       width: 100%;
     }
 
     .social-icons {
       display: flex;
       gap: clamp(1rem, 4vw, 1.5rem);
-      margin: 1.5rem 0;
+      margin: 1rem 0;
     }
 
     .social-icons a {
@@ -180,6 +171,10 @@
       transition: transform 0.2s, color 0.2s;
       text-decoration: none;
       opacity: 0.9;
+      /* تضمین کلیک روی لینک‌ها */
+      pointer-events: auto;
+      cursor: pointer;
+      z-index: 5;
     }
 
     .social-icons a:hover {
@@ -190,14 +185,25 @@
     .contact-info {
       font-size: clamp(0.8rem, 3vw, 0.95rem);
       font-weight: 300;
-      margin-top: 0.8rem;
+      margin-top: 0.6rem;
       background: rgba(0, 0, 0, 0.3);
-      padding: 0.5rem clamp(1rem, 4vw, 1.2rem);
+      padding: 0.4rem 1.2rem;
       border-radius: 40px;
       backdrop-filter: blur(2px);
       border: 1px solid rgba(255, 255, 255, 0.15);
       width: fit-content;
       max-width: 90%;
+    }
+
+    /* کلاس مخصوص متن راهنما - برای حذف کافیست این بخش را پاک کنید */
+    .helper-text {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      opacity: 0.7;
+      background: rgba(0,0,0,0.2);
+      padding: 0.3rem 1rem;
+      border-radius: 30px;
+      pointer-events: none; /* جلوگیری از تداخل با کلیک */
     }
 
     .instruction {
@@ -224,12 +230,13 @@
           <i class="fas fa-crown"></i>
         </div>
         <div class="brand-name">
-          SENSI
+          برند من
         </div>
         <div class="tagline">
-          <i class="fas fa-star" style="font-size: 0.8rem;"></i> 24/7 <i class="fas fa-star" style="font-size: 0.8rem;"></i>
+          <i class="fas fa-star" style="font-size: 0.8rem;"></i> شعار برند شما <i class="fas fa-star" style="font-size: 0.8rem;"></i>
         </div>
-        <div style="margin-top: 1.5rem; font-size: 0.85rem; opacity: 0.7; background: rgba(0,0,0,0.2); padding: 0.3rem 1rem; border-radius: 30px;">
+        <!-- متن راهنما: برای حذف، کل این div را پاک کنید -->
+        <div class="helper-text">
           <i class="fas fa-sync-alt"></i> در حال چرخش ... <i class="fas fa-hand-pointer"></i> بکشید
         </div>
       </div>
@@ -237,32 +244,33 @@
       <!-- وجه پشت (اطلاعات تماس) -->
       <div class="card-face card-back">
         <div class="icon-wrapper">
-          <i class="fas fa-rocket" style="font-size: clamp(2rem, 8vw, 3rem); margin-bottom: 0.8rem; color: #ffd966;"></i>
+          <i class="fas fa-rocket" style="font-size: clamp(2rem, 8vw, 3rem); margin-bottom: 0.5rem; color: #ffd966;"></i>
         </div>
         <div class="brand-name" style="font-size: clamp(1.4rem, 5vw, 1.8rem);">
           ارتباط با ما
         </div>
         <div class="social-icons">
-          <a href="https://instagram.com/co3in0s"><i class="fab fa-instagram"></i></a>
-          <a href="https://t.me/co3in0s"><i class="fab fa-telegram"></i></a>
-          <a href="#"><i class="fab fa-whatsapp"></i></a>
-          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <!-- لینک‌های خود را اینجا جایگزین کنید -->
+          <a href="https://instagram.com/username" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://t.me/username" target="_blank"><i class="fab fa-telegram"></i></a>
+          <a href="https://wa.me/989123456789" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://linkedin.com/in/username" target="_blank"><i class="fab fa-linkedin-in"></i></a>
         </div>
         <div class="contact-info">
-          <i class="fas fa-envelope"></i> SensiGroups@Gmail.com
+          <i class="fas fa-envelope"></i> info@brand.ir
         </div>
-        <div class="contact-info" style="margin-top: 0.5rem;">
-          <i class="fas fa-phone-alt"></i> 9739 094 901 +98
+        <div class="contact-info" style="margin-top: 0.3rem;">
+          <i class="fas fa-phone-alt"></i> +98 21 1234 5678
         </div>
-        <div class="tagline" style="border-top-color: rgba(255,255,255,0.2); margin-top: 1.2rem;">
-          <i class="fas fa-globe"></i> T.ME/CO3IN0S
+        <div class="tagline" style="border-top-color: rgba(255,255,255,0.2); margin-top: 0.8rem;">
+          <i class="fas fa-globe"></i> www.brand.ir
         </div>
       </div>
     </div>
   </div>
 
   <div class="instruction">
-    SENSI GROUPS 
+    🔄 چرخش خودکار + 👆 بکشید تا از هر زاویه ببینید
   </div>
 
   <script>
@@ -270,19 +278,16 @@
       const card = document.getElementById('card');
       const container = document.getElementById('cardContainer');
 
-      // زوایای کنونی
       let angleX = 0;
       let angleY = 0;
 
-      // متغیرهای مربوط به درگ
       let isDragging = false;
       let lastX, lastY;
       const dragSensitivity = 0.8;
 
-      // کنترل انیمیشن خودکار
       let animationFrame = null;
       let lastTimestamp = null;
-      const speedPerMs = 0.05; // 50 درجه بر ثانیه
+      const speedPerMs = 0.05;
 
       function updateTransform() {
         card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg)`;
@@ -298,15 +303,19 @@
         } else {
           lastTimestamp = null;
         }
-
         updateTransform();
         animationFrame = requestAnimationFrame(autoRotate);
       }
-
       animationFrame = requestAnimationFrame(autoRotate);
 
-      // ---- رویدادهای درگ ----
+      // شروع درگ فقط اگر روی لینک کلیک نشده باشد
       function startDrag(e) {
+        // اگر روی یک عنصر <a> یا داخل آن کلیک شده باشد، درگ شروع نشود
+        const target = e.target;
+        if (target.closest('a')) {
+          return; // اجازه کلیک به لینک داده شود
+        }
+
         e.preventDefault();
         isDragging = true;
 
